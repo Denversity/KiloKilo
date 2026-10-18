@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Palette KiloKilo (valeurs estimées depuis le design : à ajuster avec les codes exacts de Figma) -->
+    <Color x:Key="Primary">#4A7C59</Color>
+    <Color x:Key="PrimaryDark">#3A6347</Color>
+    <Color x:Key="PrimarySoft">#E4EEE6</Color>
+    <Color x:Key="Cream">#F5F0E6</Color>
+    <Color x:Key="Ink">#1F2A22</Color>
+    <Color x:Key="Muted">#6B7468</Color>
+    <Color x:Key="Line">#E6E0D2</Color>
+    <Color x:Key="Warn">#C8873A</Color>
+    <Color x:Key="WarnSoft">#FBF1E0</Color>
+    <Color x:Key="Danger">#B3402F</Color>
+
+    <!-- Mode sombre basse consommation (OLED) -->
+    <Color x:Key="DarkBg">#0E120F</Color>
+    <Color x:Key="DarkCard">#18201B</Color>
+    <Color x:Key="DarkInput">#222B25</Color>
+    <Color x:Key="DarkInk">#ECF0EA</Color>
+    <Color x:Key="DarkMuted">#9AA59C</Color>
+    <Color x:Key="DarkLine">#2A332D</Color>
+    <Color x:Key="PrimaryOnDark">#7FBF93</Color>
+    <Color x:Key="DarkPrimarySoft">#1F3326</Color>
+    <Color x:Key="DarkWarnSoft">#33291A</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="PrimaryOnDarkBrush" Color="{StaticResource PrimaryOnDark}" />
+    <SolidColorBrush x:Key="MutedBrush" Color="{StaticResource Muted}" />
+    <SolidColorBrush x:Key="DarkMutedBrush" Color="{StaticResource DarkMuted}" />
+</ResourceDictionary>

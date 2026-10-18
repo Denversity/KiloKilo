@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    xmlns:controls="clr-namespace:KiloKilo.Controls"
+    xmlns:vm="clr-namespace:KiloKilo.ViewModels"
+    x:Class="KiloKilo.Views.HistoriquePage"
+    MaxContentWidth="720">
+
+    <Grid RowDefinitions="*,Auto">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout x:Name="Host" Padding="20,20,20,96" Spacing="16">
+
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Carnet d'approvisionnement" Style="{StaticResource Eyebrow}" />
+                    <Label Text="Historique des courses" Style="{StaticResource Heading}" />
+                </VerticalStackLayout>
+
+                <Border Style="{StaticResource SoftCard}" Padding="16,14">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{Binding NbSortiesAffiche}" Style="{StaticResource Muted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding CumulAffiche}" Style="{StaticResource Accent}" FontSize="18" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource Input}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label Text="🔍" VerticalOptions="Center" />
+                        <Entry Grid.Column="1" Placeholder="Rechercher une course, un produit..." Text="{Binding Recherche}" ReturnType="Search" />
+                    </Grid>
+                </Border>
+
+                <controls:ChipBar ItemsSource="{Binding Filtres}" Command="{Binding ChoisirFiltreCommand}" />
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Courses}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Padding="14">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding OuvrirCommand, Source={RelativeSource AncestorType={x:Type vm:HistoriqueViewModel}}}"
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="3">
+                                    <Label Text="{Binding Marche}" Style="{StaticResource Strong}" />
+                                    <Label Grid.Column="1" Text="{Binding TotalAffiche}" Style="{StaticResource Accent}" />
+                                    <Label Grid.Row="1" Text="{Binding DateAffichee}" Style="{StaticResource Muted}" FontSize="12" />
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding NbArticlesAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                                    <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Resume}" Style="{StaticResource Muted}"
+                                           LineBreakMode="TailTruncation" MaxLines="1" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Label Text="Aucune course ne correspond à votre recherche." IsVisible="{Binding AucunResultat}"
+                       Style="{StaticResource Muted}" HorizontalTextAlignment="Center" />
+
+                <Border Style="{StaticResource WarnCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Astuce KiloKilo" Style="{StaticResource Eyebrow}" TextColor="{StaticResource Warn}" />
+                        <Label Text="{Binding Astuce}" FontSize="13" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bouton flottant -->
+        <Button Text="+  Nouvelle course" Style="{StaticResource PrimaryButton}" HorizontalOptions="End" VerticalOptions="End"
+                Margin="20" CornerRadius="26" HeightRequest="52" Command="{Binding NouvelleCourseCommand}" />
+    </Grid>
+    <controls:BottomNavBar Grid.Row="1" Active="historique" />
+    </Grid>
+</views:ResponsivePage>

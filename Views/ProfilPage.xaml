@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    xmlns:controls="clr-namespace:KiloKilo.Controls"
+    x:Class="KiloKilo.Views.ProfilPage"
+    MaxContentWidth="960">
+
+    <Grid RowDefinitions="*,Auto">
+    <ScrollView>
+        <Grid x:Name="Host" Padding="20,20,20,28"
+              ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="18">
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="Compact" />
+                    <VisualState x:Name="Wide">
+                        <VisualState.Setters>
+                            <Setter TargetName="LeftPane" Property="Grid.ColumnSpan" Value="1" />
+                            <Setter TargetName="RightPane" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="RightPane" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="RightPane" Property="Grid.ColumnSpan" Value="1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <!-- Identité, économies, marchés, unités -->
+            <VerticalStackLayout x:Name="LeftPane" Grid.Row="0" Grid.ColumnSpan="2" Spacing="16">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <Border WidthRequest="76" HeightRequest="76" StrokeShape="RoundRectangle 38" StrokeThickness="3" Stroke="{StaticResource Primary}">
+                        <Image Source="avatar_amina.jpg" Aspect="AspectFill" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="{Binding NomComplet}" Style="{StaticResource Heading}" FontSize="21" VerticalOptions="Center" />
+                            <Border Style="{StaticResource SoftCard}" Padding="8,2" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                                <Label Text="Vérifié" Style="{StaticResource Accent}" FontSize="11" />
+                            </Border>
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding Localisation}" Style="{StaticResource Muted}" />
+                        <Label Text="{Binding MembreDepuis}" Style="{StaticResource Muted}" FontSize="12" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Button Text="Modifier mon profil et mon budget" Style="{StaticResource OutlineButton}"
+                        Command="{Binding ModifierProfilCommand}" />
+
+                <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 22" Padding="20">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Économies estimées • Ce trimestre" Style="{StaticResource Eyebrow}" TextColor="#D6E6DB" />
+                        <Label Text="{Binding EconomiesAffichees}" FontFamily="NunitoSansExtraBold" FontSize="28" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Marchés habituels" Style="{StaticResource Subheading}" />
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Marches}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Padding="14">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Text="{Binding Nom}" Style="{StaticResource Strong}" />
+                                        <Label Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12" />
+                                    </VerticalStackLayout>
+                                    <Border Grid.Column="1" Style="{StaticResource SoftCard}" Padding="8,3" StrokeShape="RoundRectangle 10"
+                                            VerticalOptions="Center" IsVisible="{Binding EstPrincipal}">
+                                        <Label Text="PRINCIPAL" Style="{StaticResource Accent}" FontSize="10" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+                <Button Text="+  Ajouter un marché" Style="{StaticResource OutlineButton}" Command="{Binding AjouterMarcheCommand}" />
+
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Unités de mesure locales" Style="{StaticResource Subheading}" />
+                    <Label Text="Standards d'affichage pour les pesées et relevés" Style="{StaticResource Muted}" FontSize="12" />
+                </VerticalStackLayout>
+                <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Unites}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Chip}" Margin="0,0,8,8">
+                                <Label Text="{Binding .}" FontSize="13" FontFamily="NunitoSansSemiBold" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- Budget, écoconception, export, déconnexion -->
+            <VerticalStackLayout x:Name="RightPane" Grid.Row="1" Grid.ColumnSpan="2" Spacing="16">
+                <Label Text="Budget &amp; alertes" Style="{StaticResource Subheading}" />
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Plafond mensuel alloué" Style="{StaticResource Muted}" FontSize="12" />
+                                <Label Text="{Binding PlafondAffiche}" Style="{StaticResource Strong}" FontSize="18" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="FCFA (XAF) • Zone CEMAC" Style="{StaticResource Muted}" FontSize="11" VerticalOptions="Start" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding EngageProgress}" HeightRequest="8" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{Binding EngageAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                            <Label Grid.Column="1" Text="{Binding SeuilAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                        </Grid>
+                        <BoxView Style="{StaticResource Divider}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Alerte de dépassement de seuil" Style="{StaticResource Strong}" />
+                                <Label Text="Vibre et notifie dès l'atteinte du seuil" Style="{StaticResource Muted}" FontSize="12" />
+                                <Label Text="{Binding SeuilDetail}" Style="{StaticResource Muted}" FontSize="11" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding AlerteDepassement}" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Notifications des arrivages" Style="{StaticResource Strong}" />
+                                <Label Text="Mises à jour des cours du matin aux marchés suivis" Style="{StaticResource Muted}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding NotifArrivages}" VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Écoconception &amp; données" Style="{StaticResource Subheading}" />
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Mode sombre basse consommation" Style="{StaticResource Strong}" />
+                                <Label Text="Réduit l'empreinte batterie sur écran OLED" Style="{StaticResource Muted}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding ModeSombre}" VerticalOptions="Center" />
+                        </Grid>
+                        <BoxView Style="{StaticResource Divider}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Stockage local autonome" Style="{StaticResource Strong}" />
+                                <Label Text="Données enregistrées localement sans traceur" Style="{StaticResource Muted}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Border Grid.Column="1" Style="{StaticResource SoftCard}" Padding="10,4" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                                <Label Text="Actif" Style="{StaticResource Accent}" FontSize="12" />
+                            </Border>
+                        </Grid>
+                        <BoxView Style="{StaticResource Divider}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Exporter mes relevés" Style="{StaticResource Strong}" />
+                                <Label Text="Fichiers ouverts et portables (CSV)" Style="{StaticResource Muted}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Exporter" Style="{StaticResource TextButton}" Command="{Binding ExporterCommand}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="Déconnexion de cet appareil" Style="{StaticResource OutlineButton}"
+                        TextColor="{StaticResource Danger}" BorderColor="{StaticResource Danger}"
+                        Command="{Binding DeconnexionCommand}" />
+                <Label Text="{Binding Version}" Style="{StaticResource Muted}" FontSize="11" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+    <controls:BottomNavBar Grid.Row="1" Active="profil" />
+    </Grid>
+</views:ResponsivePage>

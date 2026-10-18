@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    xmlns:controls="clr-namespace:KiloKilo.Controls"
+    x:Class="KiloKilo.Views.StatsPage"
+    MaxContentWidth="960">
+
+    <Grid RowDefinitions="*,Auto">
+    <ScrollView>
+        <Grid x:Name="Host" Padding="20,20,20,28"
+              ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="18">
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="Compact" />
+                    <VisualState x:Name="Wide">
+                        <VisualState.Setters>
+                            <Setter TargetName="LeftPane" Property="Grid.ColumnSpan" Value="1" />
+                            <Setter TargetName="RightPane" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="RightPane" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="RightPane" Property="Grid.ColumnSpan" Value="1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <VerticalStackLayout x:Name="LeftPane" Grid.Row="0" Grid.ColumnSpan="2" Spacing="16">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Bilan vivres &amp; marché" Style="{StaticResource Eyebrow}" />
+                    <Label Text="Statistiques des dépenses" Style="{StaticResource Heading}" />
+                </VerticalStackLayout>
+
+                <controls:ChipBar ItemsSource="{Binding Periodes}" Command="{Binding ChoisirPeriodeCommand}" />
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Dépense cumulée" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding DepenseAffichee}" Style="{StaticResource Hero}" />
+                        <Label Text="{Binding Comparaison}" Style="{StaticResource Muted}" />
+                        <BoxView Style="{StaticResource Divider}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Panier moyen" Style="{StaticResource Muted}" />
+                                <Label Text="{Binding PanierMoyenAffiche}" Style="{StaticResource Strong}" FontSize="17" />
+                            </VerticalStackLayout>
+                            <Border Grid.Column="1" Style="{StaticResource SoftCard}" Padding="12,6" VerticalOptions="Center" StrokeShape="RoundRectangle 14">
+                                <Label Text="{Binding VariationAffichee}" Style="{StaticResource Accent}" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Rythme des courses" Style="{StaticResource Strong}" />
+                            <Label Grid.Column="1" Text="{Binding TitreRythme}" Style="{StaticResource Muted}" FontSize="12" />
+                        </Grid>
+                        <HorizontalStackLayout HeightRequest="170" HorizontalOptions="Center" Spacing="14"
+                                               BindableLayout.ItemsSource="{Binding Barres}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout VerticalOptions="End" Spacing="4" WidthRequest="44">
+                                        <Label Text="PIC" IsVisible="{Binding EstPic}" FontFamily="NunitoSansBold" FontSize="10"
+                                               HorizontalOptions="Center" TextColor="{StaticResource Warn}" />
+                                        <Label Text="{Binding MontantCourt}" Style="{StaticResource Muted}" FontSize="11" HorizontalOptions="Center" />
+                                        <BoxView HeightRequest="{Binding HauteurRequest}" WidthRequest="30" CornerRadius="8" HorizontalOptions="Center"
+                                                 Color="{AppThemeBinding Light=#B9D3C0, Dark=#35503D}">
+                                            <BoxView.Triggers>
+                                                <DataTrigger TargetType="BoxView" Binding="{Binding EstPic}" Value="True">
+                                                    <Setter Property="Color" Value="{StaticResource Primary}" />
+                                                </DataTrigger>
+                                            </BoxView.Triggers>
+                                        </BoxView>
+                                        <Label Text="{Binding Label}" Style="{StaticResource Muted}" FontSize="11" HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="RightPane" Grid.Row="1" Grid.ColumnSpan="2" Spacing="16">
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="14">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Répartition des vivres" Style="{StaticResource Strong}" />
+                            <Label Grid.Column="1" Text="100% analysé" Style="{StaticResource Muted}" FontSize="12" />
+                        </Grid>
+                        <VerticalStackLayout Spacing="14" BindableLayout.ItemsSource="{Binding Categories}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                            <Label Text="{Binding Nom}" />
+                                            <Label Grid.Column="1" Text="{Binding MontantAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                                            <Label Grid.Column="2" Text="{Binding PctAffiche}" Style="{StaticResource Accent}" WidthRequest="48" HorizontalTextAlignment="End" />
+                                        </Grid>
+                                        <ProgressBar Progress="{Binding Progress}" HeightRequest="8" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Repère des marchés" Style="{StaticResource Subheading}" />
+                    <Label Grid.Column="1" Text="{Binding NbVisitesAffiche}" Style="{StaticResource Muted}" FontSize="12" VerticalOptions="Center" />
+                </Grid>
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Marches}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Padding="14">
+                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="2">
+                                    <Label Text="{Binding Nom}" Style="{StaticResource Strong}" />
+                                    <Label Grid.Column="1" Text="{Binding MontantAffiche}" Style="{StaticResource Strong}" />
+                                    <Label Grid.Row="1" Text="{Binding CoursesAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding PartAffichee}" Style="{StaticResource Muted}" FontSize="12" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Border Style="{StaticResource WarnCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Aperçu Kilo" Style="{StaticResource Eyebrow}" TextColor="{StaticResource Warn}" />
+                        <Label Text="{Binding Apercu}" FontSize="13" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="6">
+                    <Button Text="Exporter le relevé (CSV)" Style="{StaticResource OutlineButton}" Command="{Binding ExporterCommand}" />
+                    <Label Text="Export léger optimisé sans métadonnées superflues" Style="{StaticResource Muted}" FontSize="12" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+    <controls:BottomNavBar Grid.Row="1" Active="stats" />
+    </Grid>
+</views:ResponsivePage>

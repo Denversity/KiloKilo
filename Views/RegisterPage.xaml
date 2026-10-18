@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    x:Class="KiloKilo.Views.RegisterPage"
+    Shell.TabBarIsVisible="False"
+    MaxContentWidth="480">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Host" HorizontalOptions="Center" Padding="24,32" Spacing="20">
+
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Éco-conçu • Données 100% locales" Style="{StaticResource Eyebrow}" />
+                <Label Text="Créer un compte" Style="{StaticResource Heading}" />
+                <Label Text="Votre carnet de courses et repère de prix au marché." Style="{StaticResource Muted}" />
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Nom complet" Style="{StaticResource Eyebrow}" />
+                            <Label Grid.Column="1" Text="Requis" Style="{StaticResource Accent}" FontSize="11" />
+                        </Grid>
+                        <Border Style="{StaticResource Input}">
+                            <Entry Placeholder="Ex: Amina Nguemo" Text="{Binding NomComplet}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Téléphone / Mobile Money" Style="{StaticResource Eyebrow}" />
+                            <Label Grid.Column="1" Text="Requis" Style="{StaticResource Accent}" FontSize="11" />
+                        </Grid>
+                        <Border Style="{StaticResource Input}">
+                            <Entry Placeholder="+237 690 12 34 56" Text="{Binding Telephone}" Keyboard="Telephone" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Marché de référence habituel" Style="{StaticResource Eyebrow}" />
+                            <Label Grid.Column="1" Text="Par défaut" Style="{StaticResource Accent}" FontSize="11" />
+                        </Grid>
+                        <Border Style="{StaticResource Input}">
+                            <Picker Title="Sélectionner votre marché" ItemsSource="{Binding Marches}"
+                                    SelectedItem="{Binding MarcheReference}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Budget mensuel estimé" Style="{StaticResource Eyebrow}" />
+                            <Label Grid.Column="1" Text="Optionnel" Style="{StaticResource Muted}" FontSize="11" />
+                        </Grid>
+                        <Border Style="{StaticResource Input}">
+                            <Entry Placeholder="Ex: 150 000 FCFA" Text="{Binding Budget}" Keyboard="Numeric" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Code secret PIN (4 chiffres)" Style="{StaticResource Eyebrow}" />
+                            <Label Grid.Column="1" Text="Accès rapide à l'étal" Style="{StaticResource Muted}" FontSize="11" />
+                        </Grid>
+                        <Border Style="{StaticResource Input}">
+                            <Entry Placeholder="••••" Text="{Binding Pin}" IsPassword="True" MaxLength="4" Keyboard="Numeric" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Spacing="8">
+                        <CheckBox IsChecked="{Binding AccepteConditions}" VerticalOptions="Start" />
+                        <Label Text="J'accepte les conditions d'utilisation éthiques et la conservation de mes données locales sans traçage commercial."
+                               Style="{StaticResource Muted}" WidthRequest="260" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding Erreur}" IsVisible="{Binding HasErreur}" Style="{StaticResource ErrorText}" />
+
+                    <Button Text="Créer mon carnet de marché" Style="{StaticResource PrimaryButton}"
+                            Command="{Binding CreerCommand}" IsEnabled="{Binding IsNotBusy}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HeightRequest="24" />
+                </VerticalStackLayout>
+            </Border>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="2">
+                <Label Text="Vous avez déjà un carnet ?" Style="{StaticResource Muted}" VerticalOptions="Center" />
+                <Button Text="Se connecter" Style="{StaticResource TextButton}" Command="{Binding SeConnecterCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ResponsivePage>

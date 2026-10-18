@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    x:Class="KiloKilo.Views.ProduitDetailPage"
+    Shell.TabBarIsVisible="False"
+    MaxContentWidth="640">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Host" Padding="20,20,20,28" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <Button Text="←" Style="{StaticResource TextButton}" FontSize="22" WidthRequest="44" Padding="0"
+                        Command="{Binding RetourCommand}" />
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label Text="Évolution du prix" Style="{StaticResource Eyebrow}" />
+                    <Label Text="{Binding Produit.Nom}" Style="{StaticResource Heading}" />
+                    <Label Text="{Binding Produit.SousTitre}" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Dernier prix relevé" Style="{StaticResource Eyebrow}" TextColor="#D6E6DB" />
+                        <Label Text="{Binding Produit.PrixActuelAffiche}" FontFamily="NunitoSansExtraBold" FontSize="28" TextColor="White" />
+                        <Label Text="{Binding Produit.UniteAffichee}" TextColor="#D6E6DB" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="1" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 14"
+                            Padding="12,6" VerticalOptions="Start">
+                        <Label Text="{Binding Produit.VariationAffichee}" Style="{StaticResource Accent}" TextColor="{StaticResource Primary}" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Style="{StaticResource Card}" Padding="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Plus bas" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding Produit.MinAffiche}" Style="{StaticResource Strong}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}" Padding="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Moyen" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding Produit.MoyenneAffichee}" Style="{StaticResource Strong}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}" Padding="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Plus haut" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding Produit.MaxAffiche}" Style="{StaticResource Strong}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Courbe des prix (FCFA)" Style="{StaticResource Strong}" />
+                    <GraphicsView x:Name="Chart" HeightRequest="200" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource SoftCard}" IsVisible="{Binding Produit.HasMeilleurMarche}">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Où acheter moins cher" Style="{StaticResource Eyebrow}" />
+                    <Label Text="{Binding Produit.MeilleurMarche}" Style="{StaticResource Accent}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Historique des relevés" Style="{StaticResource Subheading}" />
+            <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Produit.PointsRecents}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" Padding="14">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="2">
+                                <Label Text="{Binding DateAffichee}" Style="{StaticResource Strong}" />
+                                <Label Grid.Column="1" Text="{Binding PrixAffiche}" Style="{StaticResource Accent}" />
+                                <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MarcheEtQuantite}" Style="{StaticResource Muted}" FontSize="12" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ResponsivePage>

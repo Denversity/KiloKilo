@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    xmlns:controls="clr-namespace:KiloKilo.Controls"
+    xmlns:vm="clr-namespace:KiloKilo.ViewModels"
+    x:Class="KiloKilo.Views.NouvelleCoursePage"
+    Shell.TabBarIsVisible="False"
+    MaxContentWidth="640">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Host" Padding="20,20,20,28" Spacing="18">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Panier en direct" Style="{StaticResource Eyebrow}" />
+                    <Label Text="{Binding Titre}" Style="{StaticResource Heading}" />
+                    <Label Text="Enregistrez vos achats du jour simplement" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="Annuler" Style="{StaticResource TextButton}" VerticalOptions="Start"
+                        Command="{Binding AnnulerCommand}" />
+            </Grid>
+
+            <!-- Lieu des achats -->
+            <VerticalStackLayout Spacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Lieu des achats" Style="{StaticResource Eyebrow}" />
+                    <Label Grid.Column="1" Text="{Binding DateAffichee}" Style="{StaticResource Muted}" FontSize="12" />
+                </Grid>
+                <controls:ChipBar ItemsSource="{Binding Marches}" Command="{Binding ChoisirMarcheCommand}" />
+            </VerticalStackLayout>
+
+            <!-- Total estimé -->
+            <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 22" Padding="20">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Total estimé" Style="{StaticResource Eyebrow}" TextColor="#D6E6DB" />
+                        <Label Text="{Binding TotalAffiche}" FontFamily="NunitoSansExtraBold" FontSize="28" TextColor="White" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" Text="{Binding NbArticlesAffiche}" TextColor="#D6E6DB" FontSize="13" VerticalOptions="End" />
+                </Grid>
+            </Border>
+
+            <!-- Articles pesés & achetés -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Articles pesés &amp; achetés" Style="{StaticResource Eyebrow}" />
+
+                <Border Style="{StaticResource SoftCard}" IsVisible="{Binding EstVide}">
+                    <Label Text="Aucun article pour l'instant. Ajoutez votre premier produit ci-dessous."
+                           Style="{StaticResource Muted}" HorizontalTextAlignment="Center" />
+                </Border>
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Articles}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Padding="12">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="12">
+                                    <Border WidthRequest="48" HeightRequest="48" StrokeShape="RoundRectangle 14" StrokeThickness="0">
+                                        <Image Source="{Binding Photo}" Aspect="AspectFill" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                        <Label Text="{Binding Nom}" Style="{StaticResource Strong}" />
+                                        <Label Text="{Binding Quantite}" Style="{StaticResource Muted}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="2" Text="{Binding PrixAffiche}" Style="{StaticResource Strong}" VerticalOptions="Center" />
+                                    <Button Grid.Column="3" Text="✕" Style="{StaticResource TextButton}" WidthRequest="40" Padding="0"
+                                            TextColor="{StaticResource Danger}"
+                                            Command="{Binding SupprimerArticleCommand, Source={RelativeSource AncestorType={x:Type vm:NouvelleCourseViewModel}}}"
+                                            CommandParameter="{Binding .}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Formulaire d'ajout -->
+                <Border Style="{StaticResource Card}" IsVisible="{Binding IsAjoutVisible}">
+                    <VerticalStackLayout Spacing="10">
+                        <Border Style="{StaticResource Input}"><Entry Placeholder="Produit (ex. Tomates fraîches)" Text="{Binding NouveauNom}" /></Border>
+                        <Label Text="{Binding HintPrix}" IsVisible="{Binding HasHint}" Style="{StaticResource Accent}" FontSize="12" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border Style="{StaticResource Input}"><Entry Placeholder="Quantité (ex. 3 kg)" Text="{Binding NouvelleQuantite}" /></Border>
+                            <Border Grid.Column="1" Style="{StaticResource Input}"><Entry Placeholder="Prix (FCFA)" Text="{Binding NouveauPrix}" Keyboard="Numeric" /></Border>
+                        </Grid>
+                        <Button Text="Ajouter au panier" Style="{StaticResource PrimaryButton}" HeightRequest="46"
+                                Command="{Binding AjouterArticleCommand}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="+  Ajouter un produit" Style="{StaticResource OutlineButton}" Command="{Binding BasculerAjoutCommand}" />
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource WarnCard}">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Budget mensuel restant" Style="{StaticResource Strong}" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="{Binding BudgetRestantAffiche}" Style="{StaticResource Strong}" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <Label Text="{Binding Erreur}" IsVisible="{Binding HasErreur}" Style="{StaticResource ErrorText}" />
+
+            <VerticalStackLayout Spacing="8">
+                <Button Text="{Binding LibelleValider}" Style="{StaticResource PrimaryButton}" Command="{Binding ValiderCommand}" />
+                <Button Text="Garder comme brouillon" Style="{StaticResource OutlineButton}" IsVisible="{Binding IsCreation}" Command="{Binding BrouillonCommand}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ResponsivePage>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    x:Class="KiloKilo.Views.DetailCoursePage"
+    Shell.TabBarIsVisible="False"
+    MaxContentWidth="640">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Host" HorizontalOptions="Center" Padding="20,20,20,28" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <Button Text="←" Style="{StaticResource TextButton}" FontSize="22" WidthRequest="44" Padding="0"
+                        Command="{Binding RetourCommand}" IsVisible="{Binding IsNotConfirmation}" />
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label Text="{Binding Course.MarcheEtDate}" Style="{StaticResource Eyebrow}" />
+                    <Label Text="Détails du panier" Style="{StaticResource Heading}" />
+                    <Label Text="Synthèse de votre ravitaillement et relevé des mercuriales" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Bandeau de validation (arrivée depuis « Nouvelle course ») -->
+            <Border Style="{StaticResource SoftCard}" IsVisible="{Binding IsConfirmation}">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="✓" Style="{StaticResource Accent}" FontSize="20" VerticalOptions="Center" />
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Panier validé et enregistré" Style="{StaticResource Accent}" />
+                        <Label Text="Vos relevés restent stockés sur cet appareil." Style="{StaticResource Muted}" FontSize="12" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Montant total -->
+            <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Montant total payé" Style="{StaticResource Eyebrow}" TextColor="#D6E6DB" />
+                    <Label Text="{Binding Course.TotalAffiche}" FontFamily="NunitoSansExtraBold" FontSize="32" TextColor="White" />
+                    <HorizontalStackLayout Spacing="14">
+                        <Label Text="{Binding Course.NbArticlesAffiche}" TextColor="#D6E6DB" FontSize="13" />
+                        <Label Text="{Binding Course.ModePaiement}" TextColor="#D6E6DB" FontSize="13" />
+                        <Label Text="Enregistré en local" TextColor="#D6E6DB" FontSize="13" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Économie constatée -->
+            <Border Style="{StaticResource WarnCard}" IsVisible="{Binding Course.HasEconomie}">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Économie constatée" Style="{StaticResource Eyebrow}" TextColor="{StaticResource Warn}" />
+                    <Label Text="{Binding Course.EconomieAffichee}" Style="{StaticResource Subheading}" />
+                    <Label Text="{Binding Course.NoteEconomie}" Style="{StaticResource Muted}" FontSize="12" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Articles -->
+            <Label Style="{StaticResource Eyebrow}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Articles achetés (" />
+                        <Span Text="{Binding Course.NbArticles}" />
+                        <Span Text=") • Prix unitaire pondéré" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Course.Articles}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" Padding="12">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border WidthRequest="56" HeightRequest="56" StrokeShape="RoundRectangle 14" StrokeThickness="0">
+                                    <Image Source="{Binding Photo}" Aspect="AspectFill" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label Text="{Binding Nom}" Style="{StaticResource Strong}" />
+                                    <Label Text="{Binding Quantite}" Style="{StaticResource Muted}" FontSize="12" />
+                                    <Label Text="{Binding Repere}" IsVisible="{Binding HasRepere}" Style="{StaticResource Accent}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="{Binding PrixAffiche}" Style="{StaticResource Strong}" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label Text="Ces cours sont validés et archivés pour ajuster l'indice local des denrées alimentaires à Yaoundé."
+                   Style="{StaticResource Muted}" FontSize="12" />
+
+            <VerticalStackLayout Spacing="8">
+                <Button Text="Retour à l'accueil" Style="{StaticResource PrimaryButton}" IsVisible="{Binding IsConfirmation}"
+                        Command="{Binding RetourAccueilCommand}" />
+                <Button Text="Dupliquer pour une prochaine course" Style="{StaticResource PrimaryButton}" IsVisible="{Binding IsNotConfirmation}"
+                        Command="{Binding DupliquerCommand}" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Text="Modifier" Style="{StaticResource OutlineButton}" Command="{Binding ModifierCommand}" />
+                    <Button Grid.Column="1" Text="Supprimer" Style="{StaticResource OutlineButton}"
+                            TextColor="{StaticResource Danger}" BorderColor="{StaticResource Danger}"
+                            Command="{Binding SupprimerCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ResponsivePage>
