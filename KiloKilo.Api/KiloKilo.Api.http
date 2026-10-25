@@ -1,0 +1,18 @@
+@host = http://localhost:5080
+
+### Santé
+GET {{host}}/health
+
+### Connexion (compte démo, environnement Development)
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "identifiant": "+237690000000", "pin": "1234" }
+
+### Courses (remplacez <TOKEN> par accessToken)
+GET {{host}}/api/courses
+Authorization: Bearer <TOKEN>
+
+### Statistiques
+GET {{host}}/api/stats?periode=Mois
+Authorization: Bearer <TOKEN>

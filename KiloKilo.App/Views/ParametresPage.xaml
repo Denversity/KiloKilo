@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ResponsivePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:KiloKilo.Views"
+    x:Class="KiloKilo.Views.ParametresPage"
+    Shell.TabBarIsVisible="False"
+    MaxContentWidth="560">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Host" Padding="20,20,20,28" Spacing="18">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <Button Text="←" Style="{StaticResource TextButton}" FontSize="22" WidthRequest="44" Padding="0"
+                        Command="{Binding RetourCommand}" />
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label Text="Profil" Style="{StaticResource Eyebrow}" />
+                    <Label Text="Paramètres" Style="{StaticResource Heading}" />
+                    <Label Text="Vos informations et votre budget mensuel" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nom complet" Style="{StaticResource Eyebrow}" />
+                        <Border Style="{StaticResource Input}"><Entry Text="{Binding NomComplet}" /></Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Téléphone / Mobile Money" Style="{StaticResource Eyebrow}" />
+                        <Border Style="{StaticResource Input}"><Entry Text="{Binding Telephone}" Keyboard="Telephone" /></Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="E-mail (optionnel)" Style="{StaticResource Eyebrow}" />
+                        <Border Style="{StaticResource Input}"><Entry Text="{Binding Email}" Keyboard="Email" /></Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Ville" Style="{StaticResource Eyebrow}" />
+                        <Border Style="{StaticResource Input}"><Entry Text="{Binding Localisation}" /></Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Budget &amp; alertes" Style="{StaticResource Subheading}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Plafond mensuel (FCFA)" Style="{StaticResource Eyebrow}" />
+                        <Border Style="{StaticResource Input}"><Entry Text="{Binding Budget}" Keyboard="Numeric" /></Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Seuil d'alerte" Style="{StaticResource Eyebrow}" />
+                        <Slider Minimum="50" Maximum="100" Value="{Binding SeuilPct}"
+                                MinimumTrackColor="{StaticResource Primary}" ThumbColor="{StaticResource Primary}" />
+                        <Label Text="{Binding SeuilAffiche}" Style="{StaticResource Muted}" FontSize="12" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Serveur" Style="{StaticResource Subheading}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Adresse de l'API" Style="{StaticResource Eyebrow}" />
+                    <Border Style="{StaticResource Input}"><Entry Text="{Binding ServeurUrl}" Keyboard="Url" /></Border>
+                    <Button Text="Tester la connexion" Style="{StaticResource OutlineButton}" HeightRequest="44" Command="{Binding TesterServeurCommand}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="{Binding Erreur}" IsVisible="{Binding HasErreur}" Style="{StaticResource ErrorText}" />
+
+            <VerticalStackLayout Spacing="8">
+                <Button Text="Enregistrer" Style="{StaticResource PrimaryButton}" Command="{Binding EnregistrerCommand}" />
+                <Button Text="Annuler" Style="{StaticResource OutlineButton}" Command="{Binding RetourCommand}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ResponsivePage>
